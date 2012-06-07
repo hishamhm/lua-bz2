@@ -1,6 +1,7 @@
 /* This file implements the Lua binding to libbzip2.
  *
  * Copyright (c) 2008, Evan Klitzke <evan@eklitzke.org>
+ * Copyright (c) 2012, Thomas Harning Jr <harningt@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -23,6 +24,8 @@
 #include <lauxlib.h>
 
 #include <assert.h>
+
+#include "lbz2_file_writer.h"
 
 #define LBZ_STATE_META "LuaBook.bz2"
 
@@ -321,5 +324,8 @@ int luaopen_bz2(lua_State *L) {
 	lua_pop(L, 1);
 
 	luaL_register(L, "bz2", bzlib_f);
+
+	register_lbz2_file_writer(L);
+
 	return 1;
 }
