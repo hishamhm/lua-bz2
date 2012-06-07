@@ -1,24 +1,55 @@
 require("bz2")
 
--- read in a file and display the uncompressed data to stdout (i.e. this
--- behaves identically to bzcat)
-
-b = bz2.open("access_log.bz2")
-text = b:read(1024)
-while text ~= nil do
-	io.write(text)
-	text = b:read(1024)
+math.randomseed(42)
+local data_stream = {}
+for i = 1, 1000 do
+	data_stream[#data_stream + 1] = tostring(math.random()) .. "\n"
 end
+
+local filename = os.tmpname()
+local out = assert(bz2.openWrite(filename))
+for _, item in ipairs(data_stream) do
+	assert(out:write(item))
+end
+assert(out:close())
+
+local input = assert(bz2.open(filename))
+for _, item in ipairs(data_stream) do
+	local read = assert(input:read(#item))
+	assert(#read == #item, "Data length mismatch: expected " .. #item .. " got " .. #read)
+	assert(read == item, "Data item mismatch")
+end
+assert(nil == input:read(1024), "Unexpected data found")
+input:close()
+
+b = bz2.open(filename)
+for _, item in ipairs(data_stream) do
+	local read = b:getline()
+	assert(#read == #item, "Data length mismatch: expected " .. #item .. " got " .. #read)
+	assert(read == item, "Data item mismatch")
+end
+assert("" == b:getline(), "Expected final empty line")
+assert(nil == b:getline(), "Unexpected data found")
 b:close()
 
-b = bz2.open("access_log.bz2")
-line = b:getline()
-while line ~= nil do
-	io.write(line)
-	line = b:getline()
+local i = 1
+
+local b = assert(bz2.open(filename))
+for read in b:lines() do
+	local item = data_stream[i]
+	i = i + 1
+	if i == #data_stream + 2 then
+		-- Final terminator
+		item = ""
+	else
+		-- Add in nul terminator if not final
+		read = read .. "\n"
+	end
+	assert(#read == #item, "Data length mismatch: expected " .. #item .. " got " .. #read)
+	assert(read == item, "Data item mismatch")
 end
+assert(nil == b:getline(), "Unexpected data found")
 b:close()
 
-for line in bz2.open("access_log.bz2"):lines() do
-	print(line)
-end
+os.remove(filename)
+
