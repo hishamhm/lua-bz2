@@ -53,3 +53,53 @@ b:close()
 
 os.remove(filename)
 
+-- Test stream ops
+local compressor = assert(bz2.initCompress())
+local compressed = {}
+for _, item in ipairs(data_stream) do
+	local val = assert(compressor:update(item))
+	if #val > 0 then
+		-- Avoid feeding in empty chunks since BZ2 accumulates quite a bit
+		compressed[#compressed + 1] = val
+	end
+end
+-- Finish stream
+compressed[#compressed + 1] = assert(compressor:update(nil))
+assert(compressor:close())
+
+-- ADD DUMMY DATA FOR CHECK
+local DUMMY_TRAILER = "I AM A DUMMY TRAILER VALUE"
+compressed[#compressed] = compressed[#compressed] .. DUMMY_TRAILER
+
+local decompressor = assert(bz2.initDecompress())
+local decompressed = {}
+local finished
+local trailer = {}
+for _, item in ipairs(compressed) do
+	if finished then
+		trailer[#trailer + 1] = item
+	else
+		local ret, err = decompressor:update(item)
+		if not ret then
+			error(err .. " - for item " .. _ .. " of length " .. #item)
+		end
+		decompressed[#decompressed + 1] = ret
+		if err then
+			finished = true
+			if err > 0 then
+				trailer[#trailer + 1] = item:sub(-err)
+			end
+		end
+	end
+end
+assert(decompressor:close())
+
+local data = table.concat(data_stream)
+decompressed = table.concat(decompressed)
+assert(#decompressed == #data, "Expected " .. #data .. " but got " .. #decompressed)
+assert(decompressed == data, "Data mismatch on decompression")
+
+trailer = table.concat(trailer)
+assert(DUMMY_TRAILER == trailer, "Expected trailer: [[" .. DUMMY_TRAILER .. "]] got [[" .. trailer .. "]]")
+
+

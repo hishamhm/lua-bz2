@@ -26,6 +26,7 @@
 #include <assert.h>
 
 #include "lbz2_file_writer.h"
+#include "lbz2_stream.h"
 
 #define LBZ_STATE_META "LuaBook.bz2"
 
@@ -326,6 +327,7 @@ int luaopen_bz2(lua_State *L) {
 	luaL_register(L, "bz2", bzlib_f);
 
 	register_lbz2_file_writer(L);
+	register_lbz2_stream(L);
 
 	return 1;
 }
