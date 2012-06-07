@@ -15,7 +15,7 @@ PFLAGS = $(shell pkg-config --cflags lua)
 endif
 
 bz2.so: lbz.c
-	$(CC) $(SOFLAGS) $(PFLAGS) $(CFLAGS) $(LDFLAGS) lbz.c -o bz2.so
+	$(CC) $(SOFLAGS) $(PFLAGS) $(CFLAGS) lbz.c $(LDFLAGS) -o bz2.so
 
 clean:
 	-rm -f bz2.so
