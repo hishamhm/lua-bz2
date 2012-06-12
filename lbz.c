@@ -324,6 +324,10 @@ int luaopen_bz2(lua_State *L) {
 	lua_setfield(L, -2, "__gc");
 	lua_pop(L, 1);
 
+	lua_pushliteral(L, "bz2");
+	lua_setfield(L, -2, "_NAME");
+	lua_pushliteral(L, "0.1");
+	lua_setfield(L, -2, "_VERSION");
 	luaL_register(L, "bz2", bzlib_f);
 
 	register_lbz2_file_writer(L);
