@@ -14,7 +14,7 @@ else
 PFLAGS = $(shell pkg-config --cflags lua)
 endif
 
-SOURCES = lbz.c lbz2_file_writer.c lbz2_stream.c lbz2_common.c
+SOURCES = lbz.c lbz2_file_reader.c lbz2_file_writer.c lbz2_stream.c lbz2_common.c
 
 bz2.so: $(SOURCES)
 	$(CC) $(SOFLAGS) $(PFLAGS) $(CFLAGS) $(SOURCES) $(LDFLAGS) -o bz2.so

@@ -124,7 +124,6 @@ static luaL_Reg lbz2_file_writer_global[] = {
 };
 
 void register_lbz2_file_writer(lua_State *L) {
-	int top = lua_gettop(L);
 	luaL_newmetatable(L, LBZ2_FILE_WRITER_MT);
 	lua_newtable(L);
 	luaL_register(L, NULL, lbz2_file_writer_ops);
@@ -134,6 +133,5 @@ void register_lbz2_file_writer(lua_State *L) {
 	lua_setfield(L, -2, "__gc");
 	lua_pop(L, 1);
 
-	luaL_register(L, "bz2", lbz2_file_writer_global);
-	lua_settop(L, top);
+	luaL_register(L, NULL, lbz2_file_writer_global);
 }

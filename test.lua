@@ -13,7 +13,7 @@ for _, item in ipairs(data_stream) do
 end
 assert(out:close())
 
-local input = assert(bz2.open(filename))
+local input = assert(bz2.openRead(filename))
 for _, item in ipairs(data_stream) do
 	local read = assert(input:read(#item))
 	assert(#read == #item, "Data length mismatch: expected " .. #item .. " got " .. #read)
@@ -21,35 +21,6 @@ for _, item in ipairs(data_stream) do
 end
 assert(nil == input:read(1024), "Unexpected data found")
 input:close()
-
-b = bz2.open(filename)
-for _, item in ipairs(data_stream) do
-	local read = b:getline()
-	assert(#read == #item, "Data length mismatch: expected " .. #item .. " got " .. #read)
-	assert(read == item, "Data item mismatch")
-end
-assert("" == b:getline(), "Expected final empty line")
-assert(nil == b:getline(), "Unexpected data found")
-b:close()
-
-local i = 1
-
-local b = assert(bz2.open(filename))
-for read in b:lines() do
-	local item = data_stream[i]
-	i = i + 1
-	if i == #data_stream + 2 then
-		-- Final terminator
-		item = ""
-	else
-		-- Add in nul terminator if not final
-		read = read .. "\n"
-	end
-	assert(#read == #item, "Data length mismatch: expected " .. #item .. " got " .. #read)
-	assert(read == item, "Data item mismatch")
-end
-assert(nil == b:getline(), "Unexpected data found")
-b:close()
 
 os.remove(filename)
 

@@ -16,28 +16,10 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include <lua.h>
-#include <lauxlib.h>
 
-#include "lbz2_file_reader.h"
-#include "lbz2_file_writer.h"
-#include "lbz2_stream.h"
+#ifndef LBZ2_FILE_READER_H
+#define LBZ2_FILE_READER_H
 
-static luaL_Reg lbz2_global[] = {
-	{ NULL, NULL }
-};
+void register_lbz2_file_reader(lua_State *L);
 
-int luaopen_bz2(lua_State *L) {
-	luaL_register(L, "bz2", lbz2_global);
-
-	lua_pushliteral(L, "bz2");
-	lua_setfield(L, -2, "_NAME");
-	lua_pushliteral(L, "0.1");
-	lua_setfield(L, -2, "_VERSION");
-
-	register_lbz2_file_reader(L);
-	register_lbz2_file_writer(L);
-	register_lbz2_stream(L);
-
-	return 1;
-}
+#endif

@@ -245,7 +245,6 @@ static luaL_Reg lbz2_stream_global[] = {
 };
 
 void register_lbz2_stream(lua_State *L) {
-	int top = lua_gettop(L);
 	luaL_newmetatable(L, LBZ2_STREAM_MT);
 	lua_newtable(L);
 	luaL_register(L, NULL, lbz2_stream_ops);
@@ -255,7 +254,6 @@ void register_lbz2_stream(lua_State *L) {
 	lua_setfield(L, -2, "__gc");
 	lua_pop(L, 1);
 
-	luaL_register(L, "bz2", lbz2_stream_global);
-	lua_settop(L, top);
+	luaL_register(L, NULL, lbz2_stream_global);
 }
 
