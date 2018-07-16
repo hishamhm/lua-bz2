@@ -41,6 +41,11 @@ int luaopen_bz2(lua_State *L) {
 	register_lbz2_file_reader(L);
 	register_lbz2_file_writer(L);
 	register_lbz2_stream(L);
+	
+#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM == 501
+	lua_pushvalue(L, -1);
+	lua_setglobal(L, "bz2");
+#endif
 
 	return 1;
 }
