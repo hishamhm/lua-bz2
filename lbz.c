@@ -19,6 +19,9 @@
 #include <lua.h>
 #include <lauxlib.h>
 
+/* This includes both compat-5.3.h and compat-5.3.c */
+#include "compat-5.3.h"
+
 #include "lbz2_file_reader.h"
 #include "lbz2_file_writer.h"
 #include "lbz2_stream.h"
@@ -28,7 +31,7 @@ static luaL_Reg lbz2_global[] = {
 };
 
 int luaopen_bz2(lua_State *L) {
-	luaL_register(L, "bz2", lbz2_global);
+	luaL_newlib(L, lbz2_global);
 
 	lua_pushliteral(L, "bz2");
 	lua_setfield(L, -2, "_NAME");

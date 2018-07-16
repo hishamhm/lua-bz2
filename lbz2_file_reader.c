@@ -23,6 +23,10 @@
 #include <lua.h>
 #include <lauxlib.h>
 
+/* This explicit define prevents compat-5.3.h from loading compat-5.3.c */
+#define COMPAT53_PREFIX compat53
+#include "compat-5.3.h"
+
 #include "lbz2_file_reader.h"
 #include "lbz2_common.h"
 
@@ -149,12 +153,12 @@ static luaL_Reg lbz2_file_reader_global[] = {
 void register_lbz2_file_reader(lua_State *L) {
 	luaL_newmetatable(L, LBZ2_FILE_READER_MT);
 	lua_newtable(L);
-	luaL_register(L, NULL, lbz2_file_reader_ops);
+	luaL_setfuncs(L, lbz2_file_reader_ops, 0);
 	lua_setfield(L, -2, "__index");
 
 	lua_pushcfunction(L, lbz2_file_reader_close);
 	lua_setfield(L, -2, "__gc");
 	lua_pop(L, 1);
 
-	luaL_register(L, NULL, lbz2_file_reader_global);
+	luaL_setfuncs(L, lbz2_file_reader_global, 0);
 }

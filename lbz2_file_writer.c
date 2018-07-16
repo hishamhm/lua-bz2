@@ -25,6 +25,10 @@
 
 #include <assert.h>
 
+/* This explicit define prevents compat-5.3.h from loading compat-5.3.c */
+#define COMPAT53_PREFIX compat53
+#include "compat-5.3.h"
+
 #include "lbz2_file_writer.h"
 #include "lbz2_common.h"
 
@@ -126,12 +130,12 @@ static luaL_Reg lbz2_file_writer_global[] = {
 void register_lbz2_file_writer(lua_State *L) {
 	luaL_newmetatable(L, LBZ2_FILE_WRITER_MT);
 	lua_newtable(L);
-	luaL_register(L, NULL, lbz2_file_writer_ops);
+	luaL_setfuncs(L, lbz2_file_writer_ops, 0);
 	lua_setfield(L, -2, "__index");
 
 	lua_pushcfunction(L, lbz2_file_writer_close);
 	lua_setfield(L, -2, "__gc");
 	lua_pop(L, 1);
 
-	luaL_register(L, NULL, lbz2_file_writer_global);
+	luaL_setfuncs(L, lbz2_file_writer_global, 0);
 }

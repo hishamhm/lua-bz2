@@ -1,4 +1,4 @@
-require("bz2")
+local bz2 = require("bz2")
 
 math.randomseed(42)
 local data_stream = {}
