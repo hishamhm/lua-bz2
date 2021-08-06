@@ -1,7 +1,7 @@
 package = "lua-bz2"
 version = "dev-1"
 source = {
-   url = "git+ssh://git@github.com/harningt/lua-bz2.git"
+   url = "git+ssh://git@github.com/hishamhm/lua-bz2.git"
 }
 description = {
    summary = "A Lua binding to Julian Seward's libbzip2",
@@ -9,7 +9,7 @@ description = {
       Support for reading and writing .bz2 files
       and handling streams compressed in bzip2 format.
    ]],
-   homepage = "https://github.com/harningt/lua-bz2",
+   homepage = "https://github.com/hishamhm/lua-bz2",
    license = "ISC"
 }
 external_dependencies = {
@@ -36,6 +36,7 @@ build = {
             "lbz2_file_reader.c",
             "lbz2_file_writer.c",
             "lbz2_stream.c",
+            "compat-5.3.c",
          }
       },
       ["bz2.ltn12"] = "bz2/ltn12.lua",
