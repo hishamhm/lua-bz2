@@ -19,7 +19,8 @@
 #include <lua.h>
 #include <lauxlib.h>
 
-/* This includes both compat-5.3.h and compat-5.3.c */
+/* This explicit define prevents compat-5.3.h from loading compat-5.3.c */
+#define COMPAT53_PREFIX compat53
 #include "compat-5.3.h"
 
 #include "lbz2_file_reader.h"

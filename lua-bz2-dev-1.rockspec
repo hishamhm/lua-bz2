@@ -30,6 +30,9 @@ build = {
          libraries = {
             "bz2"
          },
+         defines = {
+            "COMPAT53_PREFIX=compat53",
+         },
          sources = {
             "lbz.c",
             "lbz2_common.c",
