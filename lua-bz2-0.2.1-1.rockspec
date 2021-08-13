@@ -1,8 +1,8 @@
 package = "lua-bz2"
-version = "0.2.0-1"
+version = "0.2.1-1"
 source = {
    url = "git+ssh://git@github.com/hishamhm/lua-bz2.git",
-   tag = "0.2.0",
+   tag = "0.2.1"
 }
 description = {
    summary = "A Lua binding to Julian Seward's libbzip2",
@@ -22,6 +22,9 @@ build = {
    type = "builtin",
    modules = {
       bz2 = {
+         defines = {
+            "COMPAT53_PREFIX=compat53"
+         },
          incdirs = {
             "$(BZ2_INCDIR)"
          },
@@ -31,18 +34,15 @@ build = {
          libraries = {
             "bz2"
          },
-         defines = {
-            "COMPAT53_PREFIX=compat53",
-         },
          sources = {
             "lbz.c",
             "lbz2_common.c",
             "lbz2_file_reader.c",
             "lbz2_file_writer.c",
             "lbz2_stream.c",
-            "compat-5.3.c",
+            "compat-5.3.c"
          }
       },
-      ["bz2.ltn12"] = "bz2/ltn12.lua",
+      ["bz2.ltn12"] = "bz2/ltn12.lua"
    }
 }
