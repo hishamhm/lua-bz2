@@ -1,7 +1,7 @@
 package = "lua-bz2"
 version = "dev-1"
 source = {
-   url = "git+ssh://git@github.com/hishamhm/lua-bz2.git"
+   url = "git://github.com/hishamhm/lua-bz2.git"
 }
 description = {
    summary = "A Lua binding to Julian Seward's libbzip2",
